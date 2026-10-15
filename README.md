@@ -14,7 +14,7 @@ No account, upload, server-side processing, or API key. A small useful tool by
 
 ## Try it locally
 
-Requires Node.js 22 or newer. No install or build step:
+Requires Node.js 24 or newer. No install or build step:
 
 ```sh
 npm start
@@ -80,8 +80,7 @@ Serve the contents of `dist/` on any static host, at a root or subdirectory URL.
 There are no secrets, runtime dependencies, migrations, or backend services.
 See [deployment instructions](docs/DEPLOYMENT.md).
 
-Browser tests require Playwright and its browsers, plus `npm start` in another
-terminal. Use an existing installation without changing this project:
+Browser tests use the locked Playwright dependency and start their own preview server:
 
 ```sh
 npm ci
@@ -107,8 +106,7 @@ fixtures. Run the relevant checks before committing.
 
 MIT licensed; see [LICENSE](LICENSE) and the
 [third-party material inventory](THIRD_PARTY_NOTICES.md). No external artwork or
-fonts are bundled. Publication and physical-device acceptance remain separate
-from the documented local verification.
+fonts are bundled.
 
 ## Source, support and development
 

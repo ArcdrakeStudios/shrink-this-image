@@ -16,15 +16,15 @@ was observed.
 An initial local test could not connect to its preview server and established no
 application result. Subsequent checks against an accessible local server produced
 the results above.
-No physical-device, screen-reader, native WebMCP or hosted HTTPS acceptance is
-inferred. The original engine-specific limits below remain applicable.
+Physical devices, screen readers, native WebMCP and the hosted HTTPS origin were
+not tested in this run. The original engine-specific limits below remain applicable.
 
 ## Original verification — 8 October 2026
 
 ## Result
 
-v1's local deployment-readiness gate passes. No deployment or physical-device
-acceptance is implied. The static app requires no runtime dependencies.
+The local checks below passed. Physical devices were not tested.
+The static app requires no runtime dependencies.
 
 - `npm run check`: JavaScript syntax checks and **8/8 deterministic tests** passed.
 - Chromium **151.0.7922.34**: **20 browser checks** passed.

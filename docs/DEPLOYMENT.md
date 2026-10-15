@@ -1,9 +1,7 @@
-# Deployment handoff
+# Deployment
 
-Preparation status on 14 October 2026: no hosted release is confirmed. The local
-package can be served by a static host; registration, domain binding and final
-publication require separate owner approval. No DNS or website change has been
-performed by this preparation.
+Serve the static package on an HTTPS host. Production hosting is managed separately
+from this source repository; see [release procedure](RELEASING.md).
 
 ## Artifact
 
@@ -38,14 +36,11 @@ Select an authorized hosting destination and confirm access before deployment.
 A locally generated package does not establish hosting ownership or availability.
 The static package contains no hosting identifiers or credentials.
 
-## Proposed Arcdrake placement
+## Arcdrake hosting
 
-Candidate route: `arcdrake.com/tools/shrink-this-image/` (not configured or live).
-The existing company website must deliberately serve/proxy that path, or link to
-a separately approved hosted tool. DNS alone cannot assign a subdirectory. Keep
-the existing website and its other routes intact. The selected shared home is tools.arcdrake.com, with this app under /shrink/. The routing implementation is separate from source publication. Confirm public Imprint/privacy destinations and host logging
-before launch. Catalogue links must remain absent until their real destination
-has been verified.
+The planned collection home is `tools.arcdrake.com`, with this app at `/shrink/`.
+Hosting is configured separately from this repository. Preserve relative asset
+paths, response headers and the existing Imprint link when mounting the app.
 
 ## Source publication
 
