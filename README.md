@@ -10,7 +10,8 @@ No account, upload, server-side processing, or API key. A small useful tool by
 ![Shrink This Image, desktop preview](docs/screenshot.png)
 
 [Mobile result preview](docs/mobile-screenshot.png) uses synthetic test imagery.
-**Status:** Source release. Production hosting is being prepared; run locally below.
+
+**Status:** Source release. Production hosting is not yet live; run locally below.
 
 ## Try it locally
 
@@ -46,8 +47,9 @@ small text before sharing. Browser colour conversion can change appearance.
 
 Images live only in the current tab's memory. There are no uploads, analytics,
 cookies, browser storage, third-party scripts, remote fonts, or runtime requests.
-Once loaded, offline processing is verified in Chromium and Firefox; Safari's
-offline file loading remains unverified (see the verification note). Clear releases preview URLs and the decoded
+Once loaded, offline processing is verified in Chromium and Firefox. In WebKit
+testing, choosing a new file while offline failed; the app shows an error. Safari
+on Apple hardware was not tested (see the verification note). Clear releases preview URLs and the decoded
 image; closing the tab releases the app state. Downloaded files are saved by the
 browser at your request. Visible sensitive content is **not** removed.
 
@@ -76,7 +78,8 @@ npm run package
 
 `release/shrink-this-image-1.0.0.zip` contains only deployable static assets and
 the license. `release/manifest.json` lists sizes and SHA-256 hashes.
-Serve the contents of `dist/` on any static host, at a root or subdirectory URL.
+Local packages are for inspection. Production uses the approved workflow artifact
+described in [the release procedure](docs/RELEASING.md).
 There are no secrets, runtime dependencies, migrations, or backend services.
 See [deployment instructions](docs/DEPLOYMENT.md).
 
@@ -114,7 +117,7 @@ fonts are bundled.
 
 Part of Arcdrake's tools collection. The planned shared home is `tools.arcdrake.com`;
 production hosting is not live as part of this source release. Local use is available
-above. Development checks use Node.js 24, Python 3 and locked Playwright tooling:
+above. Development checks use Node.js 24 and locked Playwright tooling:
 
 ```sh
 npm ci

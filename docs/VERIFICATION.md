@@ -1,27 +1,24 @@
 # Verification
 
-## Readiness recheck — 14 October 2026
+## Browser and packaging checks — 14 October 2026
 
-Release version 1.0.0; application assets are unchanged. Node 24.14.0,
-syntax checks and 8/8 deterministic tests passed. Existing browser suite passed
+Release version 1.0.0. Node 24.14.0,
+syntax checks and 8/8 deterministic tests passed. The browser suite passed
 20 checks each in Chromium 151.0.7922.34 and Firefox 153.0; WebKit 26.5 passed
 19 ordinary checks and its graceful offline-error check. Real saved JPEG downloads
 matched advertised bytes/signature. The suite covers 100 KB and 50 KB limits,
 transparency, orientation, invalid files, recovery, 390/320px layouts and 200% text.
 Desktop/mobile result screenshots were visually inspected; controls and preview
 remain readable without horizontal overflow. `docs/mobile-screenshot.png` is the
-fresh synthetic-data mobile example. No external runtime request or page error
+synthetic-data mobile example. No external runtime request or page error
 was observed.
 
-An initial local test could not connect to its preview server and established no
-application result. Subsequent checks against an accessible local server produced
-the results above.
 Physical devices, screen readers, native WebMCP and the hosted HTTPS origin were
 not tested in this run. The original engine-specific limits below remain applicable.
 
 ## Original verification — 8 October 2026
 
-## Result
+### Result
 
 The local checks below passed. Physical devices were not tested.
 The static app requires no runtime dependencies.
@@ -36,7 +33,7 @@ The static app requires no runtime dependencies.
 - Browser traffic contained only localhost page/assets and local blob previews;
   no external requests or uncaught application errors were observed.
 
-## What was exercised
+### What was exercised
 
 A deterministic 2400×1600 noise/text fixture produced a real JPEG below 100,000
 bytes; a custom 50,000-byte limit also succeeded. The downloaded file's size,
@@ -56,7 +53,7 @@ fetch requests, so it does not fetch its own blobs in the test. The saved downlo
 is also read from disk and compared. No CSP or network interception is used to
 make the privacy check pass.
 
-## WebKit offline limitation
+### WebKit offline limitation
 
 The first WebKit run failed when attempting to read a new file under Playwright's
 `setOffline(true)`. A standalone probe, without application logic, reproduced
@@ -67,15 +64,15 @@ transport as the cause.
 
 The app now gives a readable error for any failed local-file read. WebKit's final
 test records that graceful failure instead of claiming successful offline support.
-The probe lives at `tests/webkit-offline-probe.mjs`; the earlier failure and
-probe output remain under local ignored `artifacts/`. No Safari-specific workaround
+Use the reproduction commands below for the focused file-reading probe. No Safari-specific workaround
 or unverified assertion about a real disconnected Apple device is included.
 
-## Evidence and limits
+### Evidence and limits
 
 Reproducible scripts: `tests/image.test.mjs`, `tests/browser.mjs` and the focused
-WebKit probe. Local raw evidence: `artifacts/{chromium,firefox,webkit}-report.json`,
-desktop/mobile screenshots, actual downloads and the WebKit failure/probe JSON.
+WebKit probe. Running `npm run test:ci` writes reports, desktop/mobile screenshots
+and downloads to the ignored `artifacts/` directory. Those generated files are not
+included in this repository.
 `docs/screenshot.png` is the distributable, synthetic-data initial-screen preview.
 
 Native WebMCP validation was unavailable: the installed browser context did not
@@ -93,4 +90,42 @@ Python zipfile, ran testzip() for CRC integrity, checked its six allowed entries
 and compared every entry byte-for-byte with the source assets and LICENSE. This
 manual packaging check is not part of the published test commands above.
 Deployment instructions preserve a final HTTPS/headers smoke check for the chosen
-host. That is normal deployment verification, not a missing implementation slice.
+host.
+
+## Reproduce browser checks
+
+Install Node.js 24 or newer, then install the locked dependencies and engines:
+
+```sh
+npm ci
+npx playwright install chromium firefox webkit
+```
+
+On Linux, use `npx playwright install --with-deps chromium firefox webkit` to
+install the required system libraries as well.
+
+The CI wrapper starts and stops its own preview server. Run Chromium with
+`npm run test:ci`. To select the other engines, use these PowerShell commands:
+
+```powershell
+$env:BROWSER = 'firefox'
+npm run test:ci
+$env:BROWSER = 'webkit'
+npm run test:ci
+Remove-Item Env:BROWSER
+```
+
+In a POSIX shell, use `BROWSER=firefox npm run test:ci` and
+`BROWSER=webkit npm run test:ci` instead.
+
+For the standalone offline probe, start `npm start` in a separate terminal and
+leave it running at http://127.0.0.1:4178. In the repository root, run:
+
+```sh
+node -e "require('node:fs').mkdirSync('artifacts', {recursive: true})"
+node tests/webkit-offline-probe.mjs
+```
+
+The probe writes `artifacts/webkit-offline-probe.json`. Stop the preview server
+with Ctrl+C afterward. The direct `npm run test:browser` command also requires
+this separately running server; `npm run test:ci` manages the server for you.

@@ -5,11 +5,13 @@ from this source repository; see [release procedure](RELEASING.md).
 
 ## Artifact
 
-Run `npm run check`, then `npm run package` in the repository root.
+For local inspection, run `npm run check`, then `npm run package` in the repository root.
 The resulting `release/shrink-this-image-1.0.0.zip` contains `index.html`,
 `style.css`, `app.js`, `image.js`, `_headers` and `LICENSE` at its root.
-No package installation or bundler is required. Serve `dist/` for source-based
-hosting, or extract the ZIP into a static public directory.
+Local packaging requires no package installation or bundler. For production, use
+only the retained **Prepare release artifact** workflow output for the approved
+main commit, following [RELEASING.md](RELEASING.md). Extract that approved ZIP into
+a static public directory; do not deploy a local checkout or local package.
 
 The app uses relative asset URLs, so it supports a standalone domain or a
 subdirectory. A trailing slash is required when serving it as a directory.
@@ -19,7 +21,7 @@ There are no application routes and no SPA rewrite is necessary.
 ## Host configuration
 
 - HTTPS, correct MIME types for `.js`, `.css` and `.html`.
-- Publish only `dist/` or the contents of the release ZIP, never the repository
+- Publish only the contents of the approved release ZIP, never the repository
   root, tests, docs or artifacts.
 - `_headers` is supplied for hosts supporting that convention. On other hosts,
   translate it into equivalent response headers. The HTML also includes a CSP
@@ -41,6 +43,7 @@ The static package contains no hosting identifiers or credentials.
 The planned collection home is `tools.arcdrake.com`, with this app at `/shrink/`.
 Hosting is configured separately from this repository. Preserve relative asset
 paths, response headers and the existing Imprint link when mounting the app.
+Add catalogue links only after their hosted destination has been verified.
 
 ## Source publication
 
@@ -56,5 +59,5 @@ The public source is maintained in this repository. Follow [RELEASING.md](RELEAS
    no image upload or telemetry request should occur.
 6. Verify response headers and the Imprint link.
 
-These are future deployed-host checks, not unfinished local engineering. Rollback
-is replacing the static assets with the preceding complete release.
+Run these checks after each deployment. To roll back, restore the preceding
+complete static release and repeat the checks.
