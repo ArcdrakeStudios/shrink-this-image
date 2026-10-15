@@ -95,7 +95,8 @@ Generated fixtures, browser reports and downloads live under ignored `artifacts/
 
 ## Development
 
-`dist/` is the source and deployable application. `image.js` contains validation,
+`dist/` is the application source; production uses the approved release artifact.
+`image.js` contains validation,
 header inspection and compression; `app.js` owns the interface and object-URL
 lifetime. Tests use generated synthetic images, never private user images.
 An optional WebMCP tool exposes the same compression action for an image the user

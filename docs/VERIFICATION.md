@@ -2,7 +2,7 @@
 
 ## Browser and packaging checks — 14 October 2026
 
-Release version 1.0.0. Node 24.14.0,
+Release version 1.0.0. Under Node 24.14.0,
 syntax checks and 8/8 deterministic tests passed. The browser suite passed
 20 checks each in Chromium 151.0.7922.34 and Firefox 153.0; WebKit 26.5 passed
 19 ordinary checks and its graceful offline-error check. Real saved JPEG downloads
