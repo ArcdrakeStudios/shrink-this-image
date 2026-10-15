@@ -16,6 +16,13 @@ was observed.
 Physical devices, screen readers, native WebMCP and the hosted HTTPS origin were
 not tested in this run. The original engine-specific limits below remain applicable.
 
+A one-off local verification on 14 October opened the final release ZIP with
+Python zipfile, ran testzip() for CRC integrity, checked its six allowed entries,
+and compared every entry byte-for-byte with the source assets and LICENSE. This
+manual packaging check is not part of the published test commands above.
+Deployment instructions preserve a final HTTPS/headers smoke check for the chosen
+host.
+
 ## Original verification — 8 October 2026
 
 ### Result
@@ -84,13 +91,6 @@ Not tested: physical phones, native Safari on Apple hardware, HDR/wide-gamut
 fidelity, every camera encoding, very low-memory devices, screen-reader interaction
 or every host's response-header interpretation. The app does not claim perfect
 colour preservation, perceptual quality or complete metadata forensics.
-
-A one-off local verification on 14 October opened the final release ZIP with
-Python zipfile, ran testzip() for CRC integrity, checked its six allowed entries,
-and compared every entry byte-for-byte with the source assets and LICENSE. This
-manual packaging check is not part of the published test commands above.
-Deployment instructions preserve a final HTTPS/headers smoke check for the chosen
-host.
 
 ## Reproduce browser checks
 
