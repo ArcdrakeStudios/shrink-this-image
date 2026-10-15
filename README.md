@@ -46,7 +46,8 @@ small text before sharing. Browser colour conversion can change appearance.
 ## Privacy
 
 Images live only in the current tab's memory. There are no uploads, analytics,
-cookies, browser storage, third-party scripts, remote fonts, or runtime requests.
+cookies, third-party scripts, remote fonts, or runtime requests. Only your chosen
+interface language is saved in browser storage; images and settings are not.
 Once loaded, offline processing is verified in Chromium and Firefox. In WebKit
 testing, choosing a new file while offline failed; the app shows an error. Safari
 on Apple hardware was not tested (see the verification note). Clear releases preview URLs and the decoded
