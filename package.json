@@ -1,0 +1,30 @@
+{
+  "name": "shrink-this-image",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Make an image fit a file-size limit, privately in your browser.",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "check": "node --check dist/app.js && node --check dist/image.js && node --test tests/image.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "package": "node scripts/package.mjs",
+    "test": "node --check dist/app.js && node --check dist/image.js && node --test tests/image.test.mjs",
+    "test:ci": "node ci/browser.mjs",
+    "package:release": "node scripts/package.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "playwright": "1.64.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArcdrakeStudios/shrink-this-image.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ArcdrakeStudios/shrink-this-image/issues"
+  }
+}
