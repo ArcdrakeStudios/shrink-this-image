@@ -1,3 +1,4 @@
+import {translate} from './i18n.js';
 import { loadImage, compressImage, validateSettings, formatBytes, downloadName } from './image.js';
 const $ = id => document.getElementById(id);
 let source = null, bitmap = null, originalUrl = null, resultUrl = null, busy = false, generation = 0;
@@ -8,7 +9,7 @@ function clearResult() {
 }
 function setBusy(value) {
   busy = value; document.body.classList.toggle('busy', value);
-  for (const element of document.querySelectorAll('input,select,button')) element.disabled = value;
+  for (const element of document.querySelectorAll('input,select:not(#language),button')) element.disabled = value;
   $('shrink').disabled = value || !bitmap;
   $('shrink').textContent = value ? 'Working on your device…' : 'Shrink image';
   $('settings').setAttribute('aria-busy', String(value));
@@ -85,8 +86,8 @@ if (document.modelContext?.registerTool) {
   window.addEventListener('pagehide', () => lifecycle.abort(), { once: true });
   try {
     Promise.resolve(document.modelContext.registerTool({
-      name: 'compress_selected_image', title: 'Compress selected image',
-      description: 'Compress the image the user has already selected, using the visible settings. Shows a preview and download link; does not save a file.',
+      name: 'compress_selected_image', title: translate('Compress selected image'),
+      description: translate('Compress the image the user has already selected, using the visible settings. Shows a preview and download link; does not save a file.'),
       inputSchema: { type: 'object', properties: {}, additionalProperties: false },
       annotations: { readOnlyHint: false, untrustedContentHint: true },
       execute: async input => {
