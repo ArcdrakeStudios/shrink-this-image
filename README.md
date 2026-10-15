@@ -46,7 +46,8 @@ small text before sharing. Browser colour conversion can change appearance.
 ## Privacy
 
 Images live only in the current tab's memory. There are no uploads, analytics,
-cookies, browser storage, third-party scripts, remote fonts, or runtime requests.
+cookies, third-party scripts, remote fonts, or runtime requests. Only your chosen
+interface language is saved in browser storage; images and settings are not.
 Once loaded, offline processing is verified in Chromium and Firefox. In WebKit
 testing, choosing a new file while offline failed; the app shows an error. Safari
 on Apple hardware was not tested (see the verification note). Clear releases preview URLs and the decoded
@@ -130,3 +131,20 @@ npm run package:release
 
 The CI wrapper starts and stops its own preview server. Runtime operation needs no
 package installation. [Release procedure](docs/RELEASING.md).
+
+## Languages
+
+The full interface is available in German and English. Open `?lang=de` or
+`?lang=en` to choose explicitly, or use the visible language selector. An explicit
+query takes priority over the saved preference (`arcdrake-tools-language` in
+localStorage), then the browser language; other languages fall back to English.
+Only the language preference is saved. Switching preserves the current image,
+settings and output; filenames and image pixels are not translated.
+
+The collection shell can dispatch/listen for `arcdrake-language-change` with
+`detail: {language: 'de' | 'en'}`. Changes use `history.replaceState`, without a
+reload. `dist/i18n.js` must be included when serving or packaging the app.
+
+Run `npm run test:i18n` for static copy coverage, translated errors, image state
+retention, language preference/event behavior, and actual image downloads. The
+check starts a localhost server and closes its headless browser on completion.
