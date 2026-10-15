@@ -186,6 +186,12 @@ function localize() {
     }
     attributeRecords.set(element, saved);
   }
+  // Only explicitly marked, app-owned company links follow the UI language.
+  // Download links and any user-provided content are outside this scope.
+  for (const link of document.querySelectorAll('a[data-company-page]')) {
+    const path = link.dataset.companyPage === 'imprint' ? 'imprint/' : '';
+    link.href = `https://arcdrake.com/${language === 'de' ? 'de/' : ''}${path}`;
+  }
   document.getElementById('language').value = language;
 }
 export function setLanguage(next, notify = true) {

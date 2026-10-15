@@ -16,6 +16,10 @@ try {
   await page.waitForFunction(()=>document.documentElement.lang==='de');
   assert.match(await page.locator('h1').innerText(), shrink ? /Verkleinere/ : /Verdecke/);
   assert.equal(await page.locator('#language').inputValue(),'de');
+  if (shrink) {
+    assert.deepEqual(await page.locator('[data-company-page="home"]').evaluateAll(links=>links.map(link=>link.href)),['https://arcdrake.com/de/','https://arcdrake.com/de/']);
+    assert.equal(await page.locator('[data-company-page="imprint"]').getAttribute('href'),'https://arcdrake.com/de/imprint/');
+  }
   assert.equal(await page.evaluate(()=>localStorage.getItem('arcdrake-tools-language')),'de');
   // Every explicit core validation/encoding failure has a German translation.
   const sources=await Promise.all((shrink?['image']:['image','regions']).map(name=>readFile(`dist/${name}.js`,'utf8')));
@@ -66,6 +70,10 @@ try {
   assert.equal(await page.locator('#filename').innerText(),'Mein-Original.png');
   await page.evaluate(()=>window.dispatchEvent(new CustomEvent('arcdrake-language-change',{detail:{language:'en'}})));
   assert.equal(await page.locator('html').getAttribute('lang'),'en');
+  if (shrink) {
+    assert.deepEqual(await page.locator('[data-company-page="home"]').evaluateAll(links=>links.map(link=>link.href)),['https://arcdrake.com/','https://arcdrake.com/']);
+    assert.equal(await page.locator('[data-company-page="imprint"]').getAttribute('href'),'https://arcdrake.com/imprint/');
+  }
   assert.match(page.url(),/lang=en/);
   await page.goto(url); assert.equal(await page.locator('html').getAttribute('lang'),'en');
   await page.goto(url+'/?lang=de'); assert.equal(await page.locator('html').getAttribute('lang'),'de');
