@@ -1,22 +1,28 @@
-# Release procedure
+# Packaging
 
-The canonical source is https://github.com/ArcdrakeStudios/shrink-this-image.
-The planned shared product home is `tools.arcdrake.com`; its production launch is
-separate from source publication. This repository does not automatically deploy.
+The hosted app is at [tools.arcdrake.com/shrink/](https://tools.arcdrake.com/shrink/).
+This repository contains its source and packaging tools. Repository CI and artifact
+preparation do not deploy the hosted app.
 
-1. Merge through the protected pull-request workflow with `verify` passing and
-   review findings resolved. Record independent review for an owner-authored PR.
-2. Dispatch **Prepare release artifact** on `main`. The `release` environment
-   requires owner approval and restricts runs to main. It repeats tests and packages
-   the checked-out SHA. The artifact is named with that SHA and retained for 30 days.
-3. Inspect the package manifest/hashes. Download and retain the artifact and manifest
-   in the deployment release archive before GitHub retention expires.
-4. Website deployment belongs to the separate infrastructure workflow. Pin this
-   public commit and artifact hash there; verify routing, security headers and user
-   journeys on the production origin. No credentials or deployment hooks live here.
-5. Keep the previous verified artifact and manifest. Roll back through the same
-   infrastructure workflow to those exact bytes, then check the live product.
+With Node.js 24 or newer, run from the repository root:
 
-Do not deploy from a contributor branch, arbitrary tag or local working directory.
-Static host logs and origin-dependent browser behavior require separate deployment
-verification. The initial source publication is not evidence of a live public site.
+```sh
+npm test
+npm run package:release
+```
+
+These commands need no package installation. Browser checks require the development
+setup in [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+The package command writes:
+
+- `release/shrink-this-image-1.0.0.zip`, containing the static app and licence.
+- `release/manifest.json`, listing each file's size and SHA-256 hash, plus the
+  archive's size and hash.
+
+The ZIP contains `index.html`, `style.css`, `app.js`, `i18n.js`, `image.js`,
+`_headers` and `LICENSE`. No development dependencies or test outputs are included.
+The manual **Prepare release artifact** GitHub workflow runs checks and uploads
+the package identified by its source commit.
+
+For host configuration and a deployment check, see [self-hosting](DEPLOYMENT.md).
