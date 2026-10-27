@@ -50,3 +50,5 @@ Retain the source copyright and licence notices.
 
 Keep the previous complete package for rollback. Recheck these journeys after
 restoring it.
+
+The canonical consent style block is permitted by its exact SHA-256 (`sha256-VHXTEYUc0+/a/3/pxtfczPbGydBF1J/t2RF/LB9heIo=`), alongside same-origin styles. All intersecting host style-src policies need the same exact token; never substitute unsafe-inline. The CSP regression hashes the immutable copied source block and verifies the permission. Other directives remain unchanged.
