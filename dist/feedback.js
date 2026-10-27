@@ -9,3 +9,6 @@ export const measurement = ui.client;
 void measurement.track('page_view');
 window.addEventListener('storage', ui.refreshChoice);
 window.addEventListener('focus', ui.refreshChoice);
+
+// Initial app locale can predate the native consent listener.
+window.dispatchEvent(new CustomEvent('arcdrake-language-change', {detail:{language:document.documentElement.lang}}));
