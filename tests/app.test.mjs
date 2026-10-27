@@ -72,7 +72,7 @@ test('actual feedback stays explicit, failures keep draft, EN/DE changes preserv
 test('opt-out stays usable during compression and suppresses the pending completion count', async () => {
   const f = await fixture(); await f.sample();
   const nodes = descendants(f.elements.get('measurement-feedback'));
-  const deny = nodes.find(el => el.textContent === 'Turn usage counts off');
+  const deny = nodes.find(el => el.textContent === 'No usage counts');
   f.state.holdEncode = true;
   await f.shrink();
   assert.deepEqual(f.events(), ['page_view','tool_start']);
