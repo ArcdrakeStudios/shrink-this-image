@@ -62,7 +62,7 @@ test('actual feedback stays explicit, failures keep draft, EN/DE changes preserv
   assert.equal(message.value, 'Synthetic report');
   assert.ok(nodes.some(el => /receipt could not be confirmed/.test(el.textContent)));
   f.language.setLanguage('de');
-  assert.ok(nodes.some(el => /Empfang konnte nicht bestätigt/.test(el.textContent)));
+  assert.ok(nodes.some(el => /Beleg konnte nicht bestätigt/.test(el.textContent)));
   f.language.setLanguage('en');
   assert.equal(message.value, 'Synthetic report');
   assert.ok(nodes.some(el => el.href === 'https://tools.arcdrake.com/privacy/'));
