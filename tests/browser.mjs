@@ -14,6 +14,7 @@ const check = (name, fn) => { fn(); passed.push(name); };
 try {
   await page.addInitScript(() => { window.__blobs = new Map(); const create = URL.createObjectURL.bind(URL), revoke = URL.revokeObjectURL.bind(URL); URL.createObjectURL = blob => { const url = create(blob); window.__blobs.set(url, blob); return url; }; URL.revokeObjectURL = url => { window.__blobs.delete(url); revoke(url); }; });
   await page.goto('http://127.0.0.1:4178');
+  await page.getByRole('dialog').getByRole('button', {name:'Continue without usage counts'}).click();
   await page.screenshot({path:resolve(output,`${engine}-desktop-empty.png`),fullPage:true});
   assert.equal(await page.locator('#shrink').isDisabled(),true);passed.push('primary action starts disabled');
   // Deterministic photographic-like noise exercises real encoders, not mocked sizes.
