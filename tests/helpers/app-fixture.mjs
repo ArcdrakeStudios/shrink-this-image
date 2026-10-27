@@ -92,7 +92,7 @@ export async function fixture({optedIn = true, privacy = {}, unavailable = false
     navigator: {language: 'en', ...privacy}, NodeFilter: {SHOW_TEXT: 4},
     MutationObserver: class {observe() {}},
     CustomEvent: class {constructor(type, options) { this.type = type; this.detail = options.detail; }},
-    Blob, File, Buffer, AbortController, setTimeout, clearTimeout,
+    Blob, File, Buffer, AbortController, setTimeout, clearTimeout, queueMicrotask,
     createImageBitmap: async () => ({width:1600,height:1000,close() {}}),
     fetch: async (path, options) => {
       requests.push({path,options,body:JSON.parse(options.body)});
