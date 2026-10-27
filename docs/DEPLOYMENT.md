@@ -10,7 +10,7 @@ into your host's public directory. Publish only those files, not the repository,
 tests or installed development tools. Retain `LICENSE` when redistributing.
 
 The package includes `index.html`, `style.css`, `app.js`, `i18n.js`, `image.js`,
-`_headers` and `LICENSE`. Its relative asset URLs support a domain root or a
+`sample.js`, `feedback.js`, both modules in `shared/`, `_headers` and `LICENSE`. Its relative asset URLs support a domain root or a
 subdirectory such as `/shrink/`. Redirect a directory URL without a trailing slash
 to its trailing-slash form. No single-page application rewrite is needed.
 
@@ -23,7 +23,9 @@ to its trailing-slash form. No single-page application rewrite is needed.
   response headers.
 - Deploy all files together. Revalidate HTML on visits and avoid immutable caching
   for unversioned asset names.
-- No backend, database, API token or environment variable is required by the app.
+- Image processing needs no backend. Optional counts and feedback require the
+  same-origin host integration described in [measurement and feedback](MEASUREMENT-FEEDBACK.md).
+  No browser API token or privileged secret belongs in these static files.
 - Document your host's ordinary access logs in your privacy notice. The app's local
   processing promise does not mean that visiting a hosted page makes no requests.
 
@@ -41,7 +43,9 @@ Retain the source copyright and licence notices.
 2. Choose a synthetic image larger than 1 MB, select 100 KB, compress and download.
 3. Confirm the file is below 100,000 bytes and displays correctly.
 4. Check a transparent PNG and a narrow viewport.
-5. Confirm image processing sends no image upload or analytics request.
+5. Confirm no image is uploaded. With usage counts off, no events are sent.
+   With consent, inspect that event bodies contain only product and action codes.
+   Verify explicit feedback send, unavailable responses and both notice languages.
 6. Check response headers and footer links.
 
 Keep the previous complete package for rollback. Recheck these journeys after

@@ -15,7 +15,8 @@ it. Your image is processed on your device and is not uploaded.
 
 ## How to use it
 
-1. Choose an image or drop it into the designated image drop area.
+1. Choose an image, drop it into the image area, or select **Try a sample image**.
+   The synthetic sample is drawn locally and includes transparent margins.
 2. Select a file-size limit, output format and optional longest-side limit.
 3. Select **Shrink image**, inspect the preview and download the result.
 
@@ -37,10 +38,30 @@ preserves your image, settings and result.
 ## Privacy and limits
 
 Images and settings stay in the current tab's memory. There is no account, image
-upload, analytics or server-side image processing. Only your language preference
-is saved in browser storage. Closing the tab clears the editing session; downloads
-remain on your device. Ordinary page requests reach the hosting service; see the
-[Arcdrake Tools privacy notice](https://tools.arcdrake.com/privacy/).
+upload or server-side image processing. Closing the tab clears the editing
+session; downloads remain on your device.
+
+Optional usage counts default off and require your permission. They send only
+product and action codes, including actual compression start and successful
+completion. Opt-out, Global Privacy Control and Do Not Track are respected. Counts
+are daily action totals, not unique visitors; the current UTC day and 89 prior
+days are retained. Only language and the yes/no usage-count choice are stored in
+browser storage. No image, filename, URL or task settings enter the counts.
+
+The voluntary feedback form offers Problem, Idea, Ease of use and Other categories.
+It sends your message and optional reply email to Arcdrake only when you select
+**Send feedback**, even when usage counts are off. The form explains storage,
+30-day active visibility, hourly cleanup subject to platform failure, separate
+backup/export constraints and receipt-based deletion requests. Failed or
+unconfirmed sends keep your text; no request is automatically retried.
+
+The page explains that feedback needs a confirmed receipt from this site's
+service. Static hosting alone does not activate collection. If the service is
+unavailable, your feedback text stays in the form and compression still works.
+Ordinary page requests and any optional sends expose connection metadata to the
+hosting provider. See the [Tools privacy notice](https://tools.arcdrake.com/privacy/),
+[contact Arcdrake](https://arcdrake.com/contact/) and
+[measurement integration](docs/MEASUREMENT-FEEDBACK.md).
 
 Inputs are limited to one still JPG, PNG or WebP up to 40 MB, 40 million pixels and
 16,384 pixels per side. Animated images, GIF, SVG, HEIC, AVIF, RAW, video and batch

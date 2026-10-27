@@ -1,9 +1,25 @@
 # Compatibility and tests
 
-## Browser coverage
+## Local candidate checks — 25 October 2026
+
+This candidate is checked with Node unit tests and an in-process DOM/canvas
+harness. These verify actual app action hooks, consent/privacy gates, explicit
+feedback, failure recovery, draft preservation, localized copy/link handling and
+input boundaries. The canvas encoder and image decoder are simulated: these
+checks do not establish encoded-image fidelity or visual layout.
+
+No browser, phone, screen reader, native WebMCP or native-language review was run
+for this candidate. The browser evidence below describes earlier versions. Run
+the existing browser and localization suites during an authorized browser review
+after integrating the candidate; static packaging does not activate collection.
+The attended follow-up commands are `node ci/browser.mjs` and
+`node tests/localization.mjs` from this checkout with existing Playwright/Chromium.
+Both manage their local server; neither ran in this unattended preparation.
+
+## Earlier browser coverage
 
 The browser suite supports Chromium, Firefox and WebKit desktop engines, including
-390px and 320px layouts and enlarged text. CI and the latest local checks run
+390px and 320px layouts and enlarged text. CI and the preceding local checks ran
 Chromium. Firefox and WebKit passed earlier local checks; they were not rerun in
 the latest check. The tests use synthetic images and real browser encoders and
 downloads.
@@ -15,7 +31,7 @@ The app does not promise visually lossless output or complete metadata forensics
 
 ### Offline use
 
-Processing after the page has loaded passed the current Chromium checks and
+Processing after the page had loaded passed the preceding Chromium checks and
 earlier Firefox checks. In earlier Playwright WebKit testing, reading a newly
 selected local file in offline mode failed with `NotReadableError`. A minimal
 file-reading probe reproduced the failure outside the app. The app displays an error when it cannot read a file; successful

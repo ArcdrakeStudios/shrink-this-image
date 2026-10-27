@@ -1,15 +1,20 @@
+import {measurement} from './feedback.js';
+import {mountImageSave} from './image-save.js';
+import {createSampleImage} from './sample.js';
 import {translate} from './i18n.js';
 import { loadImage, compressImage, validateSettings, formatBytes, downloadName } from './image.js';
 const $ = id => document.getElementById(id);
+const imageSave = mountImageSave($('result'), message => status(message));
 let source = null, bitmap = null, originalUrl = null, resultUrl = null, busy = false, generation = 0;
 function status(message, error = false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
 function clearResult() {
+  imageSave.clear();
   $('result').hidden = true; $('download').removeAttribute('href'); $('result-preview').removeAttribute('src');
   if (resultUrl) URL.revokeObjectURL(resultUrl); resultUrl = null;
 }
 function setBusy(value) {
   busy = value; document.body.classList.toggle('busy', value);
-  for (const element of document.querySelectorAll('input,select:not(#language),button')) element.disabled = value;
+  for (const element of document.querySelectorAll('.workspace input,.workspace select,.workspace button')) element.disabled = value;
   $('shrink').disabled = value || !bitmap;
   $('shrink').textContent = value ? 'Working on your device…' : 'Shrink image';
   $('settings').setAttribute('aria-busy', String(value));
@@ -20,7 +25,7 @@ function clear() {
   if (originalUrl) URL.revokeObjectURL(originalUrl); originalUrl = null;
   $('original-preview').removeAttribute('src'); $('file').value = ''; $('replace').value = '';
   $('empty-state').hidden = false; $('loaded-state').hidden = true; $('clear').hidden = true;
-  setBusy(false); status('Choose an image to start.');
+  setBusy(false); status('Choose an image or try the sample to start.');
 }
 async function choose(files) {
   if (busy) return;
@@ -49,29 +54,42 @@ function settingsChanged() {
   $('custom-size').max = $('unit').value === '1000' ? '20000' : '20';
   $('custom-size').step = 'any';
   $('format-note').textContent = $('format').value === 'image/jpeg' ? 'Transparent areas become white in JPG.' : $('format').value === 'image/png' ? 'Keeps transparency. Small limits may need much smaller dimensions.' : 'Keeps transparency. Some upload forms do not accept WebP.';
-  status(bitmap ? 'Settings changed. Shrink again for a new download.' : 'Choose an image to start.');
+  status(bitmap ? 'Settings changed. Shrink again for a new download.' : 'Choose an image or try the sample to start.');
 }
 async function shrink() {
   if (busy) throw new Error('An image is already being processed.');
   if (!bitmap) throw new Error('Choose an image first.');
   clearResult(); const options = settings(); setBusy(true);
   try {
+    void measurement.track('tool_start');
     const result = await compressImage(bitmap, options, message => status(message));
     resultUrl = URL.createObjectURL(result.blob);
     $('result-preview').src = resultUrl; $('download').href = resultUrl;
     $('download').download = downloadName(source.name, result.blob.type);
+    imageSave.set(result.blob, $('download').download);
     $('result-size').textContent = formatBytes(result.blob.size);
     const saved = 100 * (1 - result.blob.size / source.size);
     $('saving').textContent = saved >= 1 ? `${Math.floor(saved)}% smaller` : 'Fits your limit';
     $('result-info').textContent = `${result.width.toLocaleString()} × ${result.height.toLocaleString()} px · ${result.blob.type.split('/')[1].toUpperCase()} · under ${formatBytes(options.target)}`;
     $('result').hidden = false;
     status(result.blob.size >= source.size ? 'Your original was already small. This new copy fits the limit, but is not smaller.' : 'Done. Preview your image and download when ready.');
+    void measurement.track('tool_complete');
     return { bytes: result.blob.size, width: result.width, height: result.height, format: result.blob.type, filename: $('download').download };
   } finally { setBusy(false); }
 }
 $('settings').addEventListener('submit', event => { event.preventDefault(); shrink().catch(error => status(error.message, true)); });
 $('settings').addEventListener('input', settingsChanged);
 $('clear').addEventListener('click', clear);
+$('sample').addEventListener('click', async () => {
+  if (busy) return;
+  setBusy(true); status('Creating a sample on your device…');
+  try {
+    const sample = await createSampleImage();
+    setBusy(false);
+    await choose([sample]);
+    if (bitmap) $('shrink').focus();
+  } catch (error) { setBusy(false); status(error.message, true); }
+});
 for (const id of ['file', 'replace']) $(id).addEventListener('change', event => { const files = [...event.target.files]; if (files.length) choose(files); });
 // Prevent an accidental drop outside the target from navigating away with the file.
 window.addEventListener('dragover', event => event.preventDefault());
