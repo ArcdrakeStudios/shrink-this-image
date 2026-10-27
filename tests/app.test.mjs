@@ -62,7 +62,7 @@ test('actual feedback stays explicit, failures keep draft, EN/DE changes preserv
   assert.equal(message.value, 'Synthetic report');
   assert.ok(nodes.some(el => /receipt could not be confirmed/.test(el.textContent)));
   f.language.setLanguage('de');
-  assert.ok(nodes.some(el => /Empfang konnte nicht bestätigt/.test(el.textContent)));
+  assert.ok(nodes.some(el => /Beleg konnte nicht bestätigt/.test(el.textContent)));
   f.language.setLanguage('en');
   assert.equal(message.value, 'Synthetic report');
   assert.ok(nodes.some(el => el.href === 'https://tools.arcdrake.com/privacy/'));
@@ -72,7 +72,7 @@ test('actual feedback stays explicit, failures keep draft, EN/DE changes preserv
 test('opt-out stays usable during compression and suppresses the pending completion count', async () => {
   const f = await fixture(); await f.sample();
   const nodes = descendants(f.elements.get('measurement-feedback'));
-  const deny = nodes.find(el => el.textContent === 'Turn usage counts off');
+  const deny = nodes.find(el => el.textContent === 'No usage counts');
   f.state.holdEncode = true;
   await f.shrink();
   assert.deepEqual(f.events(), ['page_view','tool_start']);

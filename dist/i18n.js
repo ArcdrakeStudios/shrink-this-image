@@ -138,7 +138,7 @@ Object.assign(dictionary, {
   "Choose an image or try the sample to start.": "Wähle ein Bild oder probiere das Beispiel aus.",
   "Creating a sample on your device…": "Beispiel wird auf deinem Gerät erstellt …",
   "Could not create the sample image. Choose an image from your device instead.": "Das Beispielbild konnte nicht erstellt werden. Wähle stattdessen ein Bild von deinem Gerät.",
-  "Feedback and optional usage counts": "Feedback und optionale Nutzungszählung",
+  "Feedback": "Feedback",
   "Feedback is available only when this site’s service can confirm receipt. If it is unavailable, your text stays in the form. Image processing works independently.": "Feedback ist nur verfügbar, wenn der Dienst dieser Website den Empfang bestätigen kann. Ist er nicht verfügbar, bleibt dein Text im Formular. Die Bildverarbeitung funktioniert unabhängig davon.",
   "All processing happens in your browser. Images and settings are kept only in this tab’s memory; clear the image or close the tab to release them. Your image is never sent to Arcdrake. Optional counts and feedback use the separate controls below.": "Die gesamte Bildverarbeitung erfolgt in deinem Browser. Bilder und Einstellungen bleiben nur im Speicher dieses Tabs; leere das Bild oder schließe den Tab, um sie freizugeben. Dein Bild wird nie an Arcdrake gesendet. Optionale Zählungen und Feedback verwenden die getrennten Bedienelemente unten."
 });

@@ -21,7 +21,7 @@ independent of the app subpath. It is never pinned to a preview origin:
   allowlisted event: `page_view`, `play_start`, `play_complete`, `feedback_open`,
   `tool_start`, `tool_complete`. Shrink uses page entry, feedback opening and actual
   compression start/success; it does not emit game events.
-- `POST /api/feedback`: `{product:"shrink",category,message,replyTo?}`. Category is
+- `POST /api/feedback`: `{product:"shrink",category,message,replyTo?,noticeVersion:"2026-10-27-mail-v1"}`. Category is
   `bug`, `idea`, `usability` or `other`. Trimmed message length is 1–2000 JavaScript
   string code units, allowing tabs/newlines and rejecting other controls. A reply
   email is optional; omit it when blank. Supplied email must have a valid email
@@ -52,12 +52,11 @@ that limit. Failed opt-out persistence best-effort clears old permission; if bot
 write and removal fail, a saved opt-in may survive reload or in another tab. The
 client gates same-page clients and rechecks persisted cross-tab opt-outs.
 
-The full visible EN/DE notices describe Arcdrake as recipient, authorized triage
+The brief EN/DE form intro and separate privacy choices/link describe Arcdrake as recipient, authorized triage
 operators/agents, no reply guarantee, connection metadata processing by the
 hosting/abuse provider, current plus 89 prior UTC days of action totals, and
 30-day feedback visibility. Hourly physical purge is subject to platform failure;
-provider backup retention must be verified separately and authorized exports
-must expire no later than the feedback. Counts are action totals, with no unique
+provider backup retention must be verified separately. Earlier records/copies retain their original deletion commitments; the prospective policy below applies only to revised-notice submissions. Counts are action totals, with no unique
 visitor claim. Existing links are Tools `/privacy/` and company `/contact/`,
 including their `/de/` variants. Review the host notices alongside activation.
 
@@ -86,3 +85,17 @@ To disable intake, remove the client integration and forwarding together or serv
 explicit 503 while keeping local image processing and normal contact/static
 routing available. Keep cleanup running until stored feedback expires or is
 deliberately deleted; rollback must not incidentally destroy the store.
+
+## Consent and feedback notice update — 27 October 2026
+
+This private source candidate copies the reviewed canonical shared client/contract from the integrated Sites repair (client SHA-256 `3534352a635b1a9daae53492056f51b7754d0c6f40316bb7b311ecd87f46dfb0`). Both copied modules are explicitly LF in `.gitattributes` to preserve byte parity across checkouts. No production push, API activation or deployment is included. Local task behavior and privacy gates remain intact.
+
+The feedback area has a short intro and fields; analytics detail and equally usable allow/decline controls live in the separate branded Privacy choices window. Existing EN/DE privacy/contact links remain. The current client adds exact `noticeVersion: "2026-10-27-mail-v1"` to explicit feedback payloads. This identifies its notice version, not proof that a human read it. An old tab/client without the marker remains storage-only forever; it cannot be replayed into mail.
+
+For revised-notice submissions the website working copy still expires after 30 days, with hourly cleanup under normal operation. Feedback also queues for forwarding through the existing Microsoft 365 transport to Arcdrake's business mailbox. Mailbox correspondence is deleted when no longer needed, subject to statutory obligations or necessary legal claims. A saved receipt confirms website storage/queueing, never inbox delivery or a human response. Existing collected records and exports/copies retain the original promises under which they were collected; there is no retroactive exemption or new manual mailbox/export deletion duty.
+
+Host release must first accept the optional marker with `FEEDBACK_MAIL_ACTIVE="0"`, then supply the existing private mail entrypoint/binding and deploy all revised notices/client adapters. Verify service bindings and Operations Control delivery health before explicitly activating dispatch last. Marker-tagged messages queue while off without transport attempts; old/unmarked records remain legacy. Keep the deliberate active setting in later reviewed deployment configs. Standalone builds with a disabled collection switch remain disabled.
+
+Candidate verification: `npm test` passed 34 tests. Shared client/contract byte parity matches the canonical LF Git blobs; source hashes are pinned where required. The local release package/build completed. No browser, physical-device, live backend or inbox verification is claimed by this source-propagation packet.
+
+Locale startup repair: after mounting, the adapter announces the app-selected language through the existing `arcdrake-language-change` event. The native Privacy choices dialog therefore localizes its heading, purpose, disclosure, decline action and privacy URL on initial German entry and later EN/DE switches. The same form, draft and consent choice are retained. Native-dialog control-flow regression passes; browser verification is recorded separately by the release review.

@@ -8,7 +8,7 @@ test('static page copy, availability, accessible labels and explicit errors have
   f.language.setLanguage('de');
   const html = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
   const markup = html.replace(/<(script|style|noscript)\b[^>]*>[\s\S]*?<\/\1>/g, '');
-  const allowed = new Set(['▧','ARCDRAKE','.','01','02','KB','MB','Arcdrake']);
+  const allowed = new Set(['Feedback','▧','ARCDRAKE','.','01','02','KB','MB','Arcdrake']);
   const texts = [...markup.matchAll(/>([^<]+)/g)].map(match => match[1].trim()).filter(Boolean);
   const attributes = [...markup.matchAll(/(?:aria-label|alt)="([^"]+)"/g)].map(match => match[1]);
   const missing = [...texts,...attributes].filter(text => !allowed.has(text) && f.language.translate(text) === text);
