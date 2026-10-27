@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { inspectImage, validateSettings, validateDimensions, fitDimensions, downloadName, formatBytes } from '../dist/image.js';
+import { inspectImage, validateSettings, validateDimensions, fitDimensions, downloadName, formatBytes, loadImage, MAX_BYTES } from '../dist/image.js';
 
 function png(width, height, animated = false) {
   const buffer = new ArrayBuffer(animated ? 65 : 45), v = new DataView(buffer), b = new Uint8Array(buffer);
@@ -51,4 +51,14 @@ test('safe downloads have correct extension and friendly units', () => {
   assert.equal(downloadName('Grüße.webp','image/webp'),'Grüße-small.webp');
   assert.equal(downloadName('.png','image/png'),'image-small.png');
   assert.equal(formatBytes(1000000),'1.00 MB'); assert.equal(formatBytes(50000),'50.0 KB');
+});
+
+test('input byte limits reject before reading; local file read errors remain recoverable', async () => {
+  let reads = 0;
+  const file = size => ({size, arrayBuffer() { reads++; throw new Error('synthetic read failure'); }});
+  await assert.rejects(loadImage(file(0)), /non-empty/);
+  await assert.rejects(loadImage(file(MAX_BYTES + 1)), /over 40 MB/);
+  assert.equal(reads, 0);
+  await assert.rejects(loadImage(file(MAX_BYTES)), /could not read this local file/);
+  assert.equal(reads, 1);
 });

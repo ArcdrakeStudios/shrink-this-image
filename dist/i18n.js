@@ -1,3 +1,4 @@
+import {NOTICES} from './shared/measurement-feedback-client.mjs';
 // Local UI translation only. Image pixels, filenames and settings are never translated.
 const dictionary = {
   "BY ARCDRAKE": "VON ARCDRAKE",
@@ -68,7 +69,6 @@ const dictionary = {
   "JPG, PNG or WebP · up to 40 MB": "JPG, PNG oder WebP · bis zu 40 MB",
   "Original image preview": "Vorschau des Originalbildes",
   "Choose another": "Anderes Bild auswählen",
-  "Your image stays in this tab. No uploads, accounts, or tracking.": "Dein Bild bleibt in diesem Tab. Ohne Uploads, Konten oder Tracking.",
   "Make it fit": "Passend verkleinern",
   "File-size limit": "Maximale Dateigröße",
   "Under 2 MB": "Unter 2 MB",
@@ -99,7 +99,6 @@ const dictionary = {
   "A smaller file, without the guesswork.": "Eine kleinere Datei, ohne Rätselraten.",
   "We adjust quality, then dimensions when needed. Your original is never changed.": "Wir passen die Qualität und bei Bedarf die Abmessungen an. Dein Original bleibt unverändert.",
   "What happens to my image?": "Was passiert mit meinem Bild?",
-  "All processing happens in your browser. Images and settings are kept only in this tab’s memory; clear the image or close the tab to release them. Nothing is sent to Arcdrake.": "Die gesamte Verarbeitung erfolgt in deinem Browser. Bilder und Einstellungen bleiben nur im Speicher dieses Tabs; leere das Bild oder schließe den Tab, um sie freizugeben. Nichts wird an Arcdrake gesendet.",
   "Downloads are newly encoded images. Original EXIF fields such as camera and GPS data are not copied. Visible details in the image are unchanged; this is not a redaction tool. Colour rendering may change when converting to standard browser colour space.": "Downloads sind neu kodierte Bilder. Ursprüngliche EXIF-Felder wie Kamera- und GPS-Daten werden nicht übernommen. Sichtbare Bilddetails bleiben erhalten; dies ist kein Werkzeug zum Schwärzen. Bei der Umwandlung in den Standardfarbraum des Browsers kann sich die Farbdarstellung ändern.",
   "Still JPG, PNG and WebP images only, up to 40 MB, 40 million pixels, and 16,384 pixels per side. Animated files, SVG, HEIC and RAW are not supported. Small targets may reduce dimensions substantially. PNG keeps transparency but may need more resizing.": "Nur unbewegte JPG-, PNG- und WebP-Bilder bis zu 40 MB, 40 Millionen Pixel und 16.384 Pixel pro Seite. Animierte Dateien, SVG, HEIC und RAW werden nicht unterstützt. Kleine Zielgrößen können die Abmessungen stark reduzieren. PNG erhält Transparenz, erfordert aber möglicherweise eine stärkere Verkleinerung.",
   "A small useful tool by": "Ein kleines nützliches Werkzeug von",
@@ -132,6 +131,18 @@ const dictionary = {
   "Compress selected image": "Ausgewähltes Bild verkleinern",
   "Compress the image the user has already selected, using the visible settings. Shows a preview and download link; does not save a file.": "Verkleinert das bereits ausgewählte Bild mit den sichtbaren Einstellungen. Zeigt Vorschau und Downloadlink; speichert keine Datei."
 };
+Object.assign(dictionary, {
+  "Image processing on your device.": "Bildverarbeitung auf deinem Gerät.",
+  "Try a sample image": "Beispielbild ausprobieren",
+  "Your image stays in this tab and is never uploaded. Optional usage counts and feedback are separate, below.": "Dein Bild bleibt in diesem Tab und wird nie hochgeladen. Optionale Nutzungszählung und Feedback findest du getrennt unten.",
+  "Choose an image or try the sample to start.": "Wähle ein Bild oder probiere das Beispiel aus.",
+  "Creating a sample on your device…": "Beispiel wird auf deinem Gerät erstellt …",
+  "Could not create the sample image. Choose an image from your device instead.": "Das Beispielbild konnte nicht erstellt werden. Wähle stattdessen ein Bild von deinem Gerät.",
+  "Feedback and optional usage counts": "Feedback und optionale Nutzungszählung",
+  "Feedback is available only when this site’s service can confirm receipt. If it is unavailable, your text stays in the form. Image processing works independently.": "Feedback ist nur verfügbar, wenn der Dienst dieser Website den Empfang bestätigen kann. Ist er nicht verfügbar, bleibt dein Text im Formular. Die Bildverarbeitung funktioniert unabhängig davon.",
+  "All processing happens in your browser. Images and settings are kept only in this tab’s memory; clear the image or close the tab to release them. Your image is never sent to Arcdrake. Optional counts and feedback use the separate controls below.": "Die gesamte Bildverarbeitung erfolgt in deinem Browser. Bilder und Einstellungen bleiben nur im Speicher dieses Tabs; leere das Bild oder schließe den Tab, um sie freizugeben. Dein Bild wird nie an Arcdrake gesendet. Optionale Zählungen und Feedback verwenden die getrennten Bedienelemente unten."
+});
+for (const key of Object.keys(NOTICES.en)) dictionary[NOTICES.en[key].trim()] = NOTICES.de[key].trim();
 const key = 'arcdrake-tools-language';
 let preference;
 try { preference = localStorage.getItem(key); } catch {}
@@ -143,8 +154,17 @@ export function translate(source) {
   if (language !== 'de') return source;
   const text = source.trim();
   let translated = dictionary[text];
+  // The shared widget combines the choice state and storage warning in one node.
+  // Translate both together without changing the shared module or remounting it.
+  for (const state of ['on', 'off', 'blocked']) {
+    if (text === `${NOTICES.en[state]} ${NOTICES.en.pageOnly}`) {
+      translated = `${NOTICES.de[state]} ${NOTICES.de.pageOnly}`;
+      break;
+    }
+  }
   if (translated === undefined) {
     const rules = [
+      [/^Feedback saved\. Receipt ID: (.*)$/, (_, id) => NOTICES.de.sent + id],
       [/^(\d+) opaque masks?$/, (_, n) => `${n} deckende ${n === '1' ? 'Maske' : 'Masken'}`],
       [/^Mask (\d+)$/, (_, n) => `Maske ${n}`],
       [/^Remove mask (\d+)$/, (_, n) => `Maske ${n} entfernen`],
@@ -192,6 +212,12 @@ function localize() {
     const path = link.dataset.companyPage === 'imprint' ? 'imprint/' : '';
     link.href = `https://arcdrake.com/${language === 'de' ? 'de/' : ''}${path}`;
   }
+  for (const link of document.querySelectorAll('#measurement-feedback a')) {
+    const url = new URL(link.href);
+    const path = url.pathname.replace(/^\/de\//, '/');
+    url.pathname = `${language === 'de' ? '/de' : ''}${path}`;
+    if (link.href !== url.href) link.href = url.href;
+  }
   document.getElementById('language').value = language;
 }
 export function setLanguage(next, notify = true) {
@@ -218,5 +244,7 @@ window.addEventListener('storage', event => { if (event.key === key) setLanguage
 document.addEventListener('invalid', event => { event.target.setCustomValidity(language === 'de' ? 'Bitte gib einen gültigen Wert innerhalb der angegebenen Grenzen ein.' : 'Enter a valid value within the indicated limits.'); }, true);
 document.addEventListener('input', event => event.target.setCustomValidity?.(''));
 localize();
+// Notify shared controls after all imported modules have mounted their listeners.
+queueMicrotask(() => window.dispatchEvent(new CustomEvent('arcdrake-language-change', {detail:{language}})));
 if (['de','en'].includes(query)) { try { localStorage.setItem(key, language); } catch {} }
 new MutationObserver(localize).observe(document.documentElement, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:['aria-label','alt','content']});

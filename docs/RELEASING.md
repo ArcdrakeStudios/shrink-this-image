@@ -21,7 +21,7 @@ The package command writes:
   archive's size and hash.
 
 The ZIP contains `index.html`, `style.css`, `app.js`, `i18n.js`, `image.js`,
-`_headers` and `LICENSE`. No development dependencies or test outputs are included.
+`sample.js`, `feedback.js`, both modules in `shared/`, `_headers` and `LICENSE`. No development dependencies or test outputs are included.
 The manual **Prepare release artifact** GitHub workflow runs checks and uploads
 the package identified by its source commit.
 
