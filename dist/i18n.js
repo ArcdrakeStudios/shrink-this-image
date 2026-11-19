@@ -107,7 +107,7 @@ const dictionary = {
   "Support the work": "Arbeit unterstützen",
   "JavaScript is needed to shrink images on your device. No image is uploaded.": "Zum Verkleinern auf deinem Gerät wird JavaScript benötigt. Es wird kein Bild hochgeladen.",
   "Make an image fit a file-size limit. Free, private image compression in your browser. No uploads or accounts.": "Verkleinere ein Bild auf eine maximale Dateigröße. Kostenlose, private Bildkomprimierung im Browser. Ohne Uploads oder Konten.",
-  "Shrink This Image · Arcdrake": "Shrink This Image · Bilder verkleinern · Arcdrake",
+  "Compress an image to a file size limit | Shrink This Image": "Bild für ein Größenlimit in KB oder MB verkleinern | Shrink This Image",
   "Working on your device…": "Verarbeitung auf deinem Gerät …",
   "Choose one image at a time.": "Wähle jeweils nur ein Bild aus.",
   "Reading your image…": "Dein Bild wird gelesen …",
